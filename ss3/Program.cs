@@ -1,7 +1,10 @@
+using ss3.SignalR;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR(); //LD Adding SignalR to the builder
 
 var app = builder.Build();
 
@@ -23,5 +26,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<BitcoinHub>("/bitcoinHub"); //LD Map the SignalR hub endpoint
 
 app.Run();

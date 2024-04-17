@@ -7,17 +7,20 @@ using System.Xml.Linq;
 
 using NBitcoin;
 using NBitcoin.Protocol;
-
+using Microsoft.AspNetCore.SignalR;
+using ss3.SignalR;
 
 namespace ss3.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHubContext<BitcoinHub> _hubContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHubContext<BitcoinHub> hubContext)
         {
             _logger = logger;
+            _hubContext = hubContext;
         }
 
         public IActionResult Index()
@@ -52,7 +55,10 @@ namespace ss3.Controllers
                                     InventoryType.MSG_BLOCK => "Block", //LD hash related to data block. That's what I need
                                     _ => "Unknown"
                                 };
-                                Console.WriteLine($" 001 Received {eventType} event: {item.Hash}");
+
+                                Console.WriteLine($" 001 Received {eventType} event: {item.Hash}"); //LD to be deleted
+                                _hubContext.Clients.All.SendAsync("ReceiveBitcoinEvent", eventType, item.Hash); //LD will send updates to signalR
+
                             }
                         }
                         else
