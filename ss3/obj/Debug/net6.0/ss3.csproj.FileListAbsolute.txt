@@ -29,3 +29,6 @@ C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewe
 C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3\obj\Debug\net6.0\ss3.pdb
 C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3\obj\Debug\net6.0\ss3.genruntimeconfig.cache
 C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3\obj\Debug\net6.0\ref\ss3.dll
+C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3\bin\Debug\net6.0\NBitcoin.dll
+C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3\obj\Debug\net6.0\ss3.csproj.CopyComplete
