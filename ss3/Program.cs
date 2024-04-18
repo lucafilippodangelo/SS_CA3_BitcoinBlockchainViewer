@@ -24,8 +24,10 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+        //LD below default to home controller. Commenting
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.MapHub<BitcoinHub>("/bitcoinHub"); //LD Map the SignalR hub endpoint
 
