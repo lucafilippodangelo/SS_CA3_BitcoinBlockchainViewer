@@ -6,7 +6,16 @@ namespace ss3_back.SignalR
     {
         public async Task SendBitcoinEvent(string eventType, string hash)
         {
-            await Clients.All.SendAsync("ReceiveBitcoinEvent", eventType, hash); //LD send events to connected clients. Will need to pull that info from react
+            try
+            {
+                Console.WriteLine(" please work ");
+                await Clients.All.SendAsync("ReceiveBitcoinEvent", eventType.ToString(), hash.ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw; 
+            }
         }
     }
 }

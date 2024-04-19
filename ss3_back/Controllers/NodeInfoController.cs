@@ -53,15 +53,15 @@ namespace ss3.Controllers
                                 };
 
                                 Console.WriteLine($"Received {eventType} event: {item.Hash}");
-                                await _hubContext.Clients.All.SendAsync("ReceiveBitcoinEvent", eventType, item.Hash);
+                                await _hubContext.Clients.All.SendAsync("ReceiveBitcoinEvent", eventType.ToString(), item.Hash.ToString());
                             }
                         }
                         else
                         {
-                            Console.WriteLine($"OTHER Received message: {e.Message.Payload}");
+                            Console.WriteLine($"LD OTHER Received message: {e.Message.Payload}");
 
                             var receivedMessage = e.Message.Payload.GetType().Name;
-                            Console.WriteLine($"OTHER Received message type: {receivedMessage}");
+                            Console.WriteLine($"LD OTHER Received message type: {receivedMessage}");
                         }
                     };
 

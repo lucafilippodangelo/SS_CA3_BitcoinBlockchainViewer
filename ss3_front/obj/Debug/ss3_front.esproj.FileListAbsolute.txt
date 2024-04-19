@@ -1,2 +1,0 @@
-C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_front\obj\Debug\ss3_front.esproj.SuggestedBindingRedirects.cache
-C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_front\obj\Debug\ss3_front.esproj.CoreCompileInputs.cache

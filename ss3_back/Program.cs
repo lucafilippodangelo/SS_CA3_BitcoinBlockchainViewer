@@ -12,6 +12,15 @@ builder.Services.AddSignalR(); //LD Adding SignalR to the builder
 
 var app = builder.Build();
 
+
+app.UseCors(options =>
+{
+    options.WithOrigins("http://localhost:3000") //LD react is running localhost:3000
+           .AllowAnyHeader()
+           .AllowAnyMethod()
+           .AllowCredentials(); //LD should solve credentials errors
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
