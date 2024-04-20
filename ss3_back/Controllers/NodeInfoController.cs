@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using NBitcoin;
 using NBitcoin.Protocol;
+using ss3_back.Helpers;
 using ss3_back.SignalR;
 using System;
 using System.Net;
@@ -100,32 +101,10 @@ namespace ss3.Controllers
                             Block block = blockPayload.Object;
                             var transactions = block.Transactions;
 
-                            //LD data prep
-                            var blockData = new
-                            {
-                                Timestamp = timestamp,
-                                Transactions = transactions.Select(tx =>
-                                {
-                                    var outputs = tx.Outputs.Select(output => new
-                                    {
-                                        Address = output.ScriptPubKey.GetDestinationAddress(Network.Main),
-                                        Value = output.Value.ToDecimal(MoneyUnit.BTC)
-                                    }).ToList();
+                            var jsonData = CreateBlockData.GenerateJson(timestamp, transactions.ToArray(), nonce, difficulty, hashVerification);
 
-                                    return new
-                                    {
-                                        TransactionId = tx.GetHash(),
-                                        TotalValue = tx.TotalOut.ToDecimal(MoneyUnit.BTC),
-                                        Outputs = outputs
-                                    };
-                                }).ToList(),
-                                Nonce = nonce,
-                                Difficulty = difficulty,
-                                HashVerification = hashVerification
-                            };
-
-                            //LD send block
-                            await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", blockData);
+                            //LD Send block
+                            await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonData);
 
                         }
 
