@@ -7,6 +7,7 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ss3.Controllers
 {
@@ -60,9 +61,74 @@ namespace ss3.Controllers
                                 };
 
                                 Console.WriteLine($"Received {eventType} event: {item.Hash}");
-                                await _hubContext.Clients.All.SendAsync("ReceiveBitcoinEvent", eventType.ToString(), item.Hash.ToString());
+
+                                //LD if transaction send
+                                if (item.Type.HasFlag(InventoryType.MSG_TX))
+                                {
+                                    await _hubContext.Clients.All.SendAsync("ReceiveTransactionEvent", eventType.ToString(), item.Hash.ToString());
+                                }
+                                
+
+                                //LD if block request block data
+                                if (item.Type.HasFlag(InventoryType.MSG_BLOCK))
+                                {
+                                    node.SendMessage(new GetDataPayload(item));
+                                }
+
                             }
                         }
+                        else if (e.Message.Payload is BlockPayload blockPayload)
+                        {
+
+                            BlockHeader header = blockPayload.Object.Header;
+
+                            DateTimeOffset timestamp = header.BlockTime;
+                            Console.WriteLine($"Block Timestamp: {timestamp}");
+
+                            uint nonce = header.Nonce;
+                            Console.WriteLine($"Nonce: {nonce}");
+
+                            double difficulty = header.Bits.Difficulty;
+                            Console.WriteLine($"Difficulty: {difficulty}");
+
+                            uint256 computedHash = header.GetHash();
+                            uint256 blockHash = blockPayload.Object.GetHash();
+                            bool hashVerification = computedHash == blockHash;
+                            Console.WriteLine(hashVerification ? "Hash verified" : "Hash not verified");
+
+                            // LD Transactions
+                            Block block = blockPayload.Object;
+                            var transactions = block.Transactions;
+
+                            //LD data prep
+                            var blockData = new
+                            {
+                                Timestamp = timestamp,
+                                Transactions = transactions.Select(tx =>
+                                {
+                                    var outputs = tx.Outputs.Select(output => new
+                                    {
+                                        Address = output.ScriptPubKey.GetDestinationAddress(Network.Main),
+                                        Value = output.Value.ToDecimal(MoneyUnit.BTC)
+                                    }).ToList();
+
+                                    return new
+                                    {
+                                        TransactionId = tx.GetHash(),
+                                        TotalValue = tx.TotalOut.ToDecimal(MoneyUnit.BTC),
+                                        Outputs = outputs
+                                    };
+                                }).ToList(),
+                                Nonce = nonce,
+                                Difficulty = difficulty,
+                                HashVerification = hashVerification
+                            };
+
+                            //LD send block
+                            await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", blockData);
+
+                        }
+
                         else
                         {
                             Console.WriteLine($"LD OTHER Received message: {e.Message.Payload}");
@@ -74,12 +140,15 @@ namespace ss3.Controllers
 
                     node.VersionHandshake();
 
-                    // Wait until cancellation is requested
                     await Task.Delay(Timeout.Infinite, cancellationToken);
 
                     return Ok("Node info request stopped");
                 }
-            }
+
+
+
+
+                }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal Server Error: {ex.Message}");

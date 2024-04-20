@@ -13,11 +13,18 @@ function BitcoinEvents({ onNewEvent }) {
             })
             .catch(err => console.error("SignalR connection bananas:", err));
 
-        connection.on("ReceiveBitcoinEvent", (eventType, hash) => {
+        connection.on("ReceiveTransactionEvent", (eventType, hash) => {
             console.log(`Received ${eventType} event: ${hash}`);
             //LD Notify parent component with data received
             if (onNewEvent) {
                 onNewEvent(eventType, hash);
+            }
+        });
+
+        connection.on("ReceiveBlockEvent", (blockData) => {
+            console.log(`Received Block Data ${blockData}`);
+            if (onNewEvent) {
+                onNewEvent(blockData);
             }
         });
 
