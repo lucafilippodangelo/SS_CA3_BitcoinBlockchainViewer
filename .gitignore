@@ -1,0 +1,17 @@
+# .NET Core
+*.obj
+*.dll
+*.exe
+*.suo
+*.pdb
+*.user
+*.vs
+/.vscode
+/.idea
+/.vs
+/.history
+/.runsettings
+/.runsettings.*
+/bin/
+/obj/
+/out/

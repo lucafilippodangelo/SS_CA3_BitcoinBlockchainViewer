@@ -27,6 +27,13 @@ namespace ss3.Controllers
         {
             try
             {
+                //LD DYNAMIC IP
+                //IPAddress[] addresses = Dns.GetHostAddresses("seed.bitcoin.sipa.be");
+                //Random random = new Random();
+                //IPAddress selectedAddress = addresses[random.Next(addresses.Length)];
+                //Console.WriteLine($" 000 IP {selectedAddress}");
+
+                //LD STATIC IP
                 IPAddress selectedAddress = IPAddress.Parse("66.94.117.48");
                 Console.WriteLine($"IP {selectedAddress}");
 
