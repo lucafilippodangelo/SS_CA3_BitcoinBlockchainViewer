@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import * as signalR from '@microsoft/signalr';
 
 function BitcoinEvents({ onNewEvent }) {
@@ -7,35 +7,41 @@ function BitcoinEvents({ onNewEvent }) {
             .withUrl("https://localhost:7057/bitcoinHub")
             .build();
 
+        // Start the connection when the component mounts
         connection.start()
             .then(() => {
                 console.log("SignalR connected");
             })
-            .catch(err => console.error("SignalR connection bananas:", err));
+            .catch(err => console.error("SignalR connection error:", err));
 
-        connection.on("ReceiveTransactionEvent", (eventType, hash) => {
-            //console.log(`Received ${eventType} event: ${hash}`);
+        // Define event handlers
+        const handleTransactionEvent = (eventType, hash) => {
             if (onNewEvent) {
                 onNewEvent(eventType, hash);
             }
-        });
+        };
 
-        connection.on("ReceiveBlockEvent", (blockData) => {
+        const handleBlockEvent = (blockData) => {
             console.log(`Received Block Data ${blockData}`);
             if (onNewEvent) {
-                onNewEvent(null,blockData);
+                onNewEvent(null, blockData);
             }
-        });
+        };
 
-        //LD Stop the connection only when the component is unmounted
+        // Register event handlers
+        connection.on("ReceiveTransactionEvent", handleTransactionEvent);
+        connection.on("ReceiveBlockEvent", handleBlockEvent);
+
+        // Clean up: stop the connection and remove event handlers when the component unmounts
         return () => {
             console.log("BitcoinEvents component unmounted");
-
+            connection.stop();
+            connection.off("ReceiveTransactionEvent", handleTransactionEvent);
+            connection.off("ReceiveBlockEvent", handleBlockEvent);
         };
-    }, []); 
+    }, []); // Empty dependency array ensures this effect runs only once
 
     return null;
 }
-
 
 export default BitcoinEvents;

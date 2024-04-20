@@ -77,7 +77,7 @@ function App() {
 
                     <TableBody>
                         {latestBlockEvents.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((block, index) => {
-                            console.log("********** CHECK " + block); // Log the block object to the console
+                            //console.log("********** CHECK " + block); // Log the block object to the console
                             return (
                                 <TableRow key={index}>
                                     <TableCell>{block.content.Timestamp}</TableCell>

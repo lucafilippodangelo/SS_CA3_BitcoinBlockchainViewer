@@ -31,6 +31,7 @@ namespace ss3.Controllers
         {
             try
             {
+                ///*
                 string jsonData = @"{
                        ""Timestamp"":""2024-04-20T17:40:14.0000000+00:00"",
                        ""Transactions"":[
@@ -41,6 +42,38 @@ namespace ss3.Controllers
                           {
                              ""TransactionId"":""04b0a83476f9a452b98873af179e22912537b075a118653b12bd88c8579b1e8f"",
                              ""TotalValue"":""0.0024609""
+                          },
+                          {
+                             ""TransactionId"":""2360fdf9eac828cc93e678609f7343c1969739bfa4837636f4e71957a0c51f8a"",
+                             ""TotalValue"":""0.00060756""
+                          },
+                          {
+                             ""TransactionId"":""c8fd9166901ccc41bd963236d1ea35b9381db3331e2e70bb26915ddc6414fa8a"",
+                             ""TotalValue"":""0.06042177""
+                          },
+                          {
+                             ""TransactionId"":""c5dbdf8b10652b414454db5b4fabe3bed95af66d8edb928d20d8760b89e158b9"",
+                             ""TotalValue"":""0.49264513""
+                          },
+                          {
+                             ""TransactionId"":""03b2a75952ab9ff14f26f9c52d92880b3bd08aff72b128fb3f6d1f8c124312ff"",
+                             ""TotalValue"":""0.00167801""
+                          },
+                          {
+                             ""TransactionId"":""2360fdf9eac828cc93e678609f7343c1969739bfa4837636f4e71957a0c51f8a"",
+                             ""TotalValue"":""0.00060756""
+                          },
+                          {
+                             ""TransactionId"":""c8fd9166901ccc41bd963236d1ea35b9381db3331e2e70bb26915ddc6414fa8a"",
+                             ""TotalValue"":""0.06042177""
+                          },
+                          {
+                             ""TransactionId"":""c5dbdf8b10652b414454db5b4fabe3bed95af66d8edb928d20d8760b89e158b9"",
+                             ""TotalValue"":""0.49264513""
+                          },
+                          {
+                             ""TransactionId"":""03b2a75952ab9ff14f26f9c52d92880b3bd08aff72b128fb3f6d1f8c124312ff"",
+                             ""TotalValue"":""0.00167801""
                           },
                           {
                              ""TransactionId"":""2360fdf9eac828cc93e678609f7343c1969739bfa4837636f4e71957a0c51f8a"",
@@ -74,7 +107,7 @@ namespace ss3.Controllers
                 await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonString);
 
                 return Ok("Node info request stopped");
-
+                //*/
 
 
                 //LD DYNAMIC IP
