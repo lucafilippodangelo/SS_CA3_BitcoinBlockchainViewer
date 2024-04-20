@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import BitcoinEvents from './components/BitcoinEvents'; 
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,29 +7,39 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 
 function App() {
-    const [latestBitcoinEvents, setLatestTransactionEvents] = useState([]);
+    const [latestBitcoinEvents, setLatestBitcoinEvents] = useState([]);
     const [latestBlockEvents, setLatestBlockEvents] = useState([]);
+    const [page, setPage] = useState(0);
+    const rowsPerPage = 3; // Maximum number of blocks displayed at a time
+    const transactionsPerPage = 3; // Maximum number of transactions per page
 
     const handleNewEvent = (eventType, eventData) => {
         if (eventType === 'Transaction') {
-            console.log(`***************** LD TRANSACTION ${eventType}`);
-            setLatestTransactionEvents(prevEvents => [
+            setLatestBitcoinEvents(prevEvents => [
                 { eventType: 'BitcoinEvent', hash: eventData },
                 ...prevEvents.slice(0, 9)
             ]);
-        } else if (eventType === 'ReceiveBlockEvent') {
-            console.log(`***************** LD BLOCK ${eventType}`);
+        } else {
+            const parsedEventData = JSON.parse(eventData); // Parse JSON string to object
             setLatestBlockEvents(prevEvents => [
-                eventData,
+                { content: parsedEventData },
                 ...prevEvents.slice(0, 9)
             ]);
         }
     };
 
-    return (
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+
+    return ( 
         <div className="App">
+
+
             <BitcoinEvents onNewEvent={handleNewEvent} />
             <h1>Bitcoin Transactions</h1>
             <TableContainer component={Paper}>
@@ -43,7 +52,7 @@ function App() {
                     </TableHead>
                     <TableBody>
                         {latestBitcoinEvents.map((event, index) => (
-                            <TableRow key={index}>
+                            <TableRow key={index} style={{ backgroundColor: index === 0 ? '#d9ead3' : 'inherit' }}>
                                 <TableCell>{event.eventType}</TableCell>
                                 <TableCell>{event.hash}</TableCell>
                             </TableRow>
@@ -51,6 +60,7 @@ function App() {
                     </TableBody>
                 </Table>
             </TableContainer>
+
 
             <h1>Block Events</h1>
             <TableContainer component={Paper}>
@@ -64,28 +74,88 @@ function App() {
                             <TableCell>Hash Verification</TableCell>
                         </TableRow>
                     </TableHead>
+
                     <TableBody>
-                        {latestBlockEvents.map((event, index) => (
+                        {latestBlockEvents.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((block, index) => {
+                            console.log("********** CHECK " + block); // Log the block object to the console
+                            return (
+                                <TableRow key={index}>
+                                    <TableCell>{block.content.Timestamp}</TableCell>
+                                    <TableCell>
+                                        <TableContainer component={Paper}>
+                                            <Table size="small" aria-label="transactions table">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Transaction ID</TableCell>
+                                                        <TableCell>Total Value</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                {block.content.Transactions.map((tx, txIndex) => (
+                                                    txIndex >= page * transactionsPerPage && txIndex < (page + 1) * transactionsPerPage && (
+                                                        <TableRow key={txIndex}>
+                                                            <TableCell>{tx.TransactionId}</TableCell>
+                                                            <TableCell>{tx.TotalValue}</TableCell>
+                                                        </TableRow>
+                                                    )
+                                                ))}
+                                            </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TableCell>
+                                    <TableCell>{block.content.Nonce}</TableCell>
+                                    <TableCell>{block.content.Difficulty}</TableCell>
+                                    <TableCell>{block.content.HashVerification}</TableCell>
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+
+                    {/* <TableBody>
+                        {latestBlockEvents.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((block, index) => (
+                            
                             <TableRow key={index}>
-                                <TableCell>{event.Timestamp}</TableCell>
+                                <TableCell>{block.Timestamp}</TableCell>
                                 <TableCell>
-                                    <ul>
-                                        {event.Transactions.map((tx, i) => (
-                                            <li key={i}>
-                                                <strong>Transaction ID:</strong> {tx.TransactionId}, 
-                                                <strong>Total Value:</strong> {tx.TotalValue}
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <TableContainer component={Paper}>
+                                        <Table size="small" aria-label="transactions table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>Transaction ID</TableCell>
+                                                    <TableCell>Total Value</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {block.Transactions.map((tx, txIndex) => (
+                                                    txIndex >= page * transactionsPerPage && txIndex < (page + 1) * transactionsPerPage && (
+                                                        <TableRow key={txIndex}>
+                                                            <TableCell>{tx.TransactionId}</TableCell>
+                                                            <TableCell>{tx.TotalValue}</TableCell>
+                                                        </TableRow>
+                                                    )
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
                                 </TableCell>
-                                <TableCell>{event.Nonce}</TableCell>
-                                <TableCell>{event.Difficulty}</TableCell>
-                                <TableCell>{event.HashVerification}</TableCell>
+                                <TableCell>{block.Nonce}</TableCell>
+                                <TableCell>{block.Difficulty}</TableCell>
+                                <TableCell>{block.HashVerification}</TableCell>
                             </TableRow>
                         ))}
-                    </TableBody>
+                    </TableBody> */}
+
                 </Table>
             </TableContainer>
+
+            <TablePagination
+                rowsPerPageOptions={[]} // Disable rows per page selector
+                component="div"
+                count={latestBlockEvents.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+            />
         </div>
     );
 }
