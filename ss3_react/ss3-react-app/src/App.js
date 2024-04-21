@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BitcoinEvents from './components/BitcoinEvents';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,8 +10,13 @@ import Paper from '@mui/material/Paper';
 
 function App() {
     const [latestBitcoinEvents, setLatestBitcoinEvents] = useState([]);
-    const [latestBlockEvents, setLatestBlockEvents] = useState([]);
+    const [blockQueue, setBlockQueue] = useState([]);
     const [blockPage, setBlockPage] = useState({});
+
+    useEffect(() => {
+        //LD keep the most recent three
+        setBlockQueue(prevQueue => prevQueue.slice(0, 3));
+    }, [blockQueue]);
 
     const handleNewEvent = (eventType, eventData) => {
         if (eventType === 'Transaction') {
@@ -21,9 +26,9 @@ function App() {
             ]);
         } else {
             const parsedEventData = JSON.parse(eventData);
-            setLatestBlockEvents(prevEvents => [
+            setBlockQueue(prevQueue => [
                 { content: parsedEventData },
-                ...prevEvents.slice(0, 9)
+                ...prevQueue
             ]);
             setBlockPage(prevPageState => ({
                 ...prevPageState,
@@ -42,7 +47,6 @@ function App() {
     return (
         <div className="App">
             <BitcoinEvents onNewEvent={handleNewEvent} />
-
 
             <h1>Bitcoin Transactions</h1>
             <TableContainer component={Paper}>
@@ -64,7 +68,6 @@ function App() {
                 </Table>
             </TableContainer>
 
-
             <h1>Block Events</h1>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="block events table">
@@ -79,7 +82,7 @@ function App() {
                     </TableHead>
 
                     <TableBody>
-                        {latestBlockEvents.map((block, index) => (
+                        {blockQueue.map((block, index) => (
                             <TableRow key={index}>
                                 <TableCell>{block.content.Timestamp}</TableCell>
                                 <TableCell>
@@ -101,7 +104,6 @@ function App() {
                                 <TableCell>{block.content.Nonce}</TableCell>
                                 <TableCell>{block.content.Difficulty}</TableCell>
                                 <TableCell>{block.content.HashVerification}</TableCell>
-
                             </TableRow>
                         ))}
                     </TableBody>

@@ -31,6 +31,39 @@ namespace ss3.Controllers
             return blockHash;
         }
 
+        class Transaction
+        {
+            public string TransactionId { get; set; }
+            public double TotalValue { get; set; }
+        }
+
+        static List<Transaction> GenerateRandomTransactions(int count)
+        {
+            Random random = new Random();
+            List<Transaction> transactions = new List<Transaction>();
+
+            for (int i = 0; i < count; i++)
+            {
+                string transactionId = i + " - " + Guid.NewGuid().ToString("N");
+                double totalValue = random.NextDouble() * 100; // Generate random total value
+
+                Transaction transaction = new Transaction
+                {
+                    TransactionId = transactionId,
+                    TotalValue = totalValue
+                };
+
+                transactions.Add(transaction);
+            }
+
+            return transactions;
+        }
+
+
+
+
+
+
         private readonly IHubContext<BitcoinHub> _hubContext;
 
         public NodeInfoController(IHubContext<BitcoinHub> hubContext)
@@ -52,34 +85,55 @@ namespace ss3.Controllers
                 BigInteger blockHash = GenerateRandomUInt256BlockHash();
                 string blockHashString = "0x" + blockHash.ToString("X");
 
+                // Generate random transactions
+                List<Transaction> transactions = GenerateRandomTransactions(5000);
 
-                string jsonData = @"{
-                       ""Timestamp"":""" + formattedDateTime + @""",
-                       ""Transactions"":[
-                          {
-                             ""TransactionId"":""45950b1628c2dc34a2e00c31cb96ab5fcf15ffed40364aaf972ba71cc865bf5b"",
-                             ""TotalValue"":""10.28637578""
-                          },
-                          {
-                             ""TransactionId"":""04b0a83476f9a452b98873af179e22912537b075a118653b12bd88c8579b1e8f"",
-                             ""TotalValue"":""0.0024609""
-                          },
-                          {
-                             ""TransactionId"":""2360fdf9eac828cc93e678609f7343c1969739bfa4837636f4e71957a0c51f8a"",
-                             ""TotalValue"":""0.00060756""
-                          }
-                       ],
-                       ""Nonce"":""1699485074"",
-                       ""Difficulty"":""86388558925171.02"",
-                       ""HashVerification"":""True"",
-                       ""Hash"":""" + blockHashString + @"""
-                    }";
+                // Construct the JSON object
+                dynamic jsonData = new
+                {
+                    Timestamp = DateTimeOffset.UtcNow.ToString("dd MMMM yyyy, h\\:mm\\:ss tt zzz") + " " + now.ToString("fffffffzzz").Substring(0, 7) + "+01:00",
+                    Transactions = transactions,
+                    Nonce = "1699485074",
+                    Difficulty = "86388558925171.02",
+                    HashVerification = true,
+                    Hash = "blockHashString",
+                };
 
-                // Converting the JSON string to a JObject
-                JObject json = JObject.Parse(jsonData);
+                // Serialize the JSON object to string
+                string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
 
-                // Serialize the JObject to a string
-                string jsonString = JsonConvert.SerializeObject(json);
+
+                //string jsonData = @"{
+                //       ""Timestamp"":""" + formattedDateTime + @""",
+                //       ""Transactions"":[
+                //          {
+                //             ""TransactionId"":""45950b1628c2dc34a2e00c31cb96ab5fcf15ffed40364aaf972ba71cc865bf5b"",
+                //             ""TotalValue"":""10.28637578""
+                //          },
+                //          {
+                //             ""TransactionId"":""04b0a83476f9a452b98873af179e22912537b075a118653b12bd88c8579b1e8f"",
+                //             ""TotalValue"":""0.0024609""
+                //          },
+                //          {
+                //             ""TransactionId"":""2360fdf9eac828cc93e678609f7343c1969739bfa4837636f4e71957a0c51f8a"",
+                //             ""TotalValue"":""0.00060756""
+                //          },
+                //          {
+                //             ""TransactionId"":""04b0a83476f9a452b98873af179e22912537b075a118653b12bd88c8579b1e8f"",
+                //             ""TotalValue"":""0.0024609""
+                //          }
+                //       ],
+                //       ""Nonce"":""1699485074"",
+                //       ""Difficulty"":""86388558925171.02"",
+                //       ""HashVerification"":""True"",
+                //       ""Hash"":""" + blockHashString + @"""
+                //    }";
+
+                //// Converting the JSON string to a JObject
+                //JObject json = JObject.Parse(jsonData);
+
+                //// Serialize the JObject to a string
+                //string jsonString = JsonConvert.SerializeObject(json);
 
                 // Send the serialized JSON string through SignalR
                 await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonString);
