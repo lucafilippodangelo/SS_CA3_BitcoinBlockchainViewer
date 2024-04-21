@@ -86,7 +86,7 @@ namespace ss3.Controllers
                 string blockHashString = "0x" + blockHash.ToString("X");
 
                 // Generate random transactions
-                List<Transaction> transactions = GenerateRandomTransactions(5000);
+                List<Transaction> transactions = GenerateRandomTransactions(3000);
 
                 // Construct the JSON object
                 dynamic jsonData = new
@@ -96,7 +96,7 @@ namespace ss3.Controllers
                     Nonce = "1699485074",
                     Difficulty = "86388558925171.02",
                     HashVerification = true,
-                    Hash = "blockHashString",
+                    Hash = blockHashString,
                 };
 
                 // Serialize the JSON object to string

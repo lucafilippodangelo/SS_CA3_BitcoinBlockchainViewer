@@ -7,110 +7,143 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Pagination } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+
+
+
+
+
+function BlockQueueTable({ blockQueue }) {
+
+    const [paginationStatus, setPaginationStatus] = useState({});
+    
+
+    const handlePaginationClick = (Hash, pageNumber) => {
+      setPaginationStatus(prevStatus => ({
+        ...prevStatus,
+        [Hash]: pageNumber
+      }));
+    };
+  
+    return (
+      <div>
+        {blockQueue.map((block, index) => (
+          <div key={index}>
+            <h2>Block {block.content.Hash}</h2>
+            <p>Timestamp: {block.content.Timestamp}</p>
+            <p>Nonce: {block.content.Nonce}</p>
+            <p>Difficulty: {block.content.Difficulty}</p>
+            <p>Hash Verification: {block.content.HashVerification}</p>
+  
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} size="small" aria-label="transactions table">
+                <TableBody>
+                  {block.content.Transactions.slice((paginationStatus[block.content.Hash] || 1) * 10 - 10, (paginationStatus[block.content.Hash] || 1) * 10).map((tx, txIndex) => (
+                    <TableRow key={txIndex}>
+                      <TableCell>{tx.TransactionId}</TableCell>
+                      <TableCell>{tx.TotalValue}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <Pagination>
+              {Array.from({ length: Math.ceil(block.content.Transactions.length / 10) }).map((_, pageIndex) => (
+                <Pagination.Item
+                  key={pageIndex}
+                  active={(pageIndex + 1) === (paginationStatus[block.content.BlockId] || 1)}
+                  onClick={() => handlePaginationClick(block.content.Hash, pageIndex + 1)}
+                >
+                  {pageIndex + 1}
+                </Pagination.Item>
+              ))}
+            </Pagination>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  
+
+
+  
+  
+  
+  
+
+
+
+  
+  
 
 function App() {
-    const [latestBitcoinEvents, setLatestBitcoinEvents] = useState([]);
-    const [blockQueue, setBlockQueue] = useState([]);
-    const [blockPage, setBlockPage] = useState({});
+  const [latestBitcoinEvents, setLatestBitcoinEvents] = useState([]);
+  const [blockQueue, setBlockQueue] = useState([]);
+  const [blockPage, setBlockPage] = useState({});
 
-    useEffect(() => {
-        //LD keep the most recent three
-        setBlockQueue(prevQueue => prevQueue.slice(0, 3));
-    }, [blockQueue]);
+  useEffect(() => {
+    // Keep the most recent three blocks
+    setBlockQueue(prevQueue => prevQueue.slice(0, 3));
+  }, [blockQueue]);
 
-    const handleNewEvent = (eventType, eventData) => {
-        if (eventType === 'Transaction') {
-            setLatestBitcoinEvents(prevEvents => [
-                { eventType: 'BitcoinEvent', hash: eventData },
-                ...prevEvents.slice(0, 9)
-            ]);
-        } else {
-            const parsedEventData = JSON.parse(eventData);
-            setBlockQueue(prevQueue => [
-                { content: parsedEventData },
-                ...prevQueue
-            ]);
-            setBlockPage(prevPageState => ({
-                ...prevPageState,
-                [parsedEventData.BlockId]: 0
-            }));
-        }
-    };
+  const handleNewEvent = (eventType, eventData) => {
+    if (eventType === 'Transaction') {
+      setLatestBitcoinEvents(prevEvents => [
+        { eventType: 'BitcoinEvent', hash: eventData },
+        ...prevEvents.slice(0, 9)
+      ]);
+    } else {
+      const parsedEventData = JSON.parse(eventData);
+      setBlockQueue(prevQueue => [
+        { content: parsedEventData },
+        ...prevQueue
+      ]);
+      setBlockPage(prevPageState => ({
+        ...prevPageState,
+        [parsedEventData.BlockId]: 0
+      }));
+    }
+  };
 
-    const handleChangeBlockPage = (event, newPage, blockId) => {
-        setBlockPage(prevPageState => ({
-            ...prevPageState,
-            [blockId]: newPage
-        }));
-    };
+  const handleChangeBlockPage = (event, newPage, blockId) => {
+    setBlockPage(prevPageState => ({
+      ...prevPageState,
+      [blockId]: newPage
+    }));
+  };
 
-    return (
-        <div className="App">
-            <BitcoinEvents onNewEvent={handleNewEvent} />
+  return (
+    <div className="App">
+      <BitcoinEvents onNewEvent={handleNewEvent} />
 
-            <h1>Bitcoin Transactions</h1>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="transaction events table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Event Type</TableCell>
-                            <TableCell>Hash</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {latestBitcoinEvents.map((event, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{event.eventType}</TableCell>
-                                <TableCell>{event.hash}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+      <h1>Bitcoin Transactions</h1>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="transaction events table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Event Type</TableCell>
+              <TableCell>Hash</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {latestBitcoinEvents.map((event, index) => (
+              <TableRow key={index}>
+                <TableCell>{event.eventType}</TableCell>
+                <TableCell>{event.hash}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-            <h1>Block Events</h1>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="block events table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Timestamp</TableCell>
-                            <TableCell>Transactions</TableCell>
-                            <TableCell>Nonce</TableCell>
-                            <TableCell>Difficulty</TableCell>
-                            <TableCell>Hash Verification</TableCell>
-                        </TableRow>
-                    </TableHead>
-
-                    <TableBody>
-                        {blockQueue.map((block, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{block.content.Timestamp}</TableCell>
-                                <TableCell>
-                                    <div style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                                        <TableContainer component={Paper}>
-                                            <Table size="small" aria-label="transactions table">
-                                                <TableBody>
-                                                    {block.content.Transactions.map((tx, txIndex) => (
-                                                        <TableRow key={txIndex}>
-                                                            <TableCell>{tx.TransactionId}</TableCell>
-                                                            <TableCell>{tx.TotalValue}</TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
-                                    </div>
-                                </TableCell>
-                                <TableCell>{block.content.Nonce}</TableCell>
-                                <TableCell>{block.content.Difficulty}</TableCell>
-                                <TableCell>{block.content.HashVerification}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
-    );
+      <h1>Block Events</h1>
+      <BlockQueueTable blockQueue={blockQueue} />
+    </div>
+  );
 }
 
 export default App;
