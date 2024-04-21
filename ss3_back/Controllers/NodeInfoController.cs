@@ -84,11 +84,11 @@ namespace ss3.Controllers
 
                 BigInteger blockHash = GenerateRandomUInt256BlockHash();
                 string blockHashString = "0x" + blockHash.ToString("X");
+                Random random = new Random();
+                int randomNumber = random.Next(2500, 12001);
 
-                // Generate random transactions
-                List<Transaction> transactions = GenerateRandomTransactions(3000);
+                List<Transaction> transactions = GenerateRandomTransactions(randomNumber);
 
-                // Construct the JSON object
                 dynamic jsonData = new
                 {
                     Timestamp = DateTimeOffset.UtcNow.ToString("dd MMMM yyyy, h\\:mm\\:ss tt zzz") + " " + now.ToString("fffffffzzz").Substring(0, 7) + "+01:00",
@@ -99,7 +99,6 @@ namespace ss3.Controllers
                     Hash = blockHashString,
                 };
 
-                // Serialize the JSON object to string
                 string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
 
 
