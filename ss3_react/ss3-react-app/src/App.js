@@ -55,7 +55,7 @@ function BlockQueueTable({ blockQueue }) {
               {Array.from({ length: Math.ceil(block.content.Transactions.length / 10) }).map((_, pageIndex) => (
                 <Pagination.Item
                   key={pageIndex}
-                  active={(pageIndex + 1) === (paginationStatus[block.content.BlockId] || 1)}
+                  active={(pageIndex + 1) === (paginationStatus[block.content.Hash] || 1)}
                   onClick={() => handlePaginationClick(block.content.Hash, pageIndex + 1)}
                 >
                   {pageIndex + 1}
