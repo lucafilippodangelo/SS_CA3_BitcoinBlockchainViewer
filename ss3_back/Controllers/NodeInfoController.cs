@@ -77,77 +77,13 @@ namespace ss3.Controllers
         {
             try
             {
-                ///*
-                ///
-                DateTimeOffset now = DateTimeOffset.UtcNow;
-                string formattedDateTime = now.ToString("dd MMMM yyyy, h\\:mm\\:ss tt zzz") + " " + now.ToString("fffffffzzz").Substring(0, 7) + "+01:00";
-
-                BigInteger blockHash = GenerateRandomUInt256BlockHash();
-                string blockHashString = "0x" + blockHash.ToString("X");
-                Random random = new Random();
-                int randomNumber = random.Next(2500, 12001);
-
-                List<Transaction> transactions = GenerateRandomTransactions(randomNumber);
-
-                dynamic jsonData = new
-                {
-                    Timestamp = DateTimeOffset.UtcNow.ToString("dd MMMM yyyy, h\\:mm\\:ss tt zzz") + " " + now.ToString("fffffffzzz").Substring(0, 7) + "+01:00",
-                    Transactions = transactions,
-                    Nonce = "1699485074",
-                    Difficulty = "86388558925171.02",
-                    HashVerification = true,
-                    Hash = blockHashString,
-                };
-
-                string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
-
-
-                //string jsonData = @"{
-                //       ""Timestamp"":""" + formattedDateTime + @""",
-                //       ""Transactions"":[
-                //          {
-                //             ""TransactionId"":""45950b1628c2dc34a2e00c31cb96ab5fcf15ffed40364aaf972ba71cc865bf5b"",
-                //             ""TotalValue"":""10.28637578""
-                //          },
-                //          {
-                //             ""TransactionId"":""04b0a83476f9a452b98873af179e22912537b075a118653b12bd88c8579b1e8f"",
-                //             ""TotalValue"":""0.0024609""
-                //          },
-                //          {
-                //             ""TransactionId"":""2360fdf9eac828cc93e678609f7343c1969739bfa4837636f4e71957a0c51f8a"",
-                //             ""TotalValue"":""0.00060756""
-                //          },
-                //          {
-                //             ""TransactionId"":""04b0a83476f9a452b98873af179e22912537b075a118653b12bd88c8579b1e8f"",
-                //             ""TotalValue"":""0.0024609""
-                //          }
-                //       ],
-                //       ""Nonce"":""1699485074"",
-                //       ""Difficulty"":""86388558925171.02"",
-                //       ""HashVerification"":""True"",
-                //       ""Hash"":""" + blockHashString + @"""
-                //    }";
-
-                //// Converting the JSON string to a JObject
-                //JObject json = JObject.Parse(jsonData);
-
-                //// Serialize the JObject to a string
-                //string jsonString = JsonConvert.SerializeObject(json);
-
-                // Send the serialized JSON string through SignalR
-                await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonString);
-
-                return Ok("Node info request stopped");
-                //*/
-
-
                 //LD DYNAMIC IP
                 //IPAddress[] addresses = Dns.GetHostAddresses("seed.bitcoin.sipa.be");
                 //Random random = new Random();
                 //IPAddress selectedAddress = addresses[random.Next(addresses.Length)];
                 //Console.WriteLine($" 000 IP {selectedAddress}");
 
-                /*
+                ///*
                 //LD STATIC IP
                 IPAddress selectedAddress = IPAddress.Parse("66.94.117.48");
                 Console.WriteLine($"IP {selectedAddress}");
@@ -214,7 +150,7 @@ namespace ss3.Controllers
                             Block block = blockPayload.Object;
                             var transactions = block.Transactions;
 
-                            var jsonData = CreateBlockData.GenerateJson(timestamp, transactions.ToArray(), nonce, difficulty, hashVerification);
+                            var jsonData = CreateBlockData.GenerateJson(timestamp, transactions.ToArray(), nonce, difficulty, hashVerification, blockHash);
 
                             //LD Send block
                             await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonData);
@@ -236,7 +172,7 @@ namespace ss3.Controllers
 
                     return Ok("Node info request stopped");
                 }
-                */
+                //*/
 
 
 

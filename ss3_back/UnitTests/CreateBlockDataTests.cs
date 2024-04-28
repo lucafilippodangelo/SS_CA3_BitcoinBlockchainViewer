@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using ss3_back.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using Xunit;
 
 namespace ss3_back.UnitTests
@@ -77,7 +78,11 @@ namespace ss3_back.UnitTests
                               ""HashVerification"": ""True""
                             }";
 
-            var jsonData = CreateBlockData.GenerateJson(timestamp, transactions, nonce, difficulty, hashVerification);
+            byte[] randomBytes = RandomUtils.GetBytes(32);
+            uint256 randomUint256 = new uint256(randomBytes);
+
+
+            var jsonData = CreateBlockData.GenerateJson(timestamp, transactions, nonce, difficulty, hashVerification, randomUint256);
 
 
             Assert.NotNull(jsonData);

@@ -6,7 +6,7 @@ namespace ss3_back.Helpers
 {
     public class CreateBlockData
     {
-        public static string GenerateJson(DateTimeOffset timestamp, Transaction[] transactions, uint nonce, double difficulty, bool hashVerification)
+        public static string GenerateJson(DateTimeOffset timestamp, Transaction[] transactions, uint nonce, double difficulty, bool hashVerification, uint256 hash)
         {
             var blockData = new
             {
@@ -24,64 +24,11 @@ namespace ss3_back.Helpers
                 }).ToList(),
                 Nonce = nonce.ToString(),
                 Difficulty = difficulty.ToString(),
-                HashVerification = hashVerification.ToString()
+                HashVerification = hashVerification.ToString(),
+                Hash = hash.ToString()
             };
 
             return JsonConvert.SerializeObject(blockData);
         }
     }
 }
-
-//using NBitcoin;
-//using Newtonsoft.Json;
-
-//namespace ss3_back.Helpers
-//{
-//    public class CreateBlockData
-//    {
-//        public static string GenerateJson(DateTimeOffset timestamp, Transaction[] transactions, uint nonce, double difficulty, bool hashVerification)
-//        {
-//            var blockData = new
-//            {
-//                Timestamp = timestamp,
-//                Transactions = transactions.Select(tx =>
-//                {
-//                    var outputs = tx.Outputs.Select(output =>
-//                    {
-//                        string address;
-//                        var destination = output.ScriptPubKey.GetDestination();
-
-//                        if (destination != null)
-//                        {
-//                            // If scriptPubKey corresponds to a standard address format
-//                            address = destination.GetAddress(Network.Main).ToString();
-//                        }
-//                        else
-//                        {
-//                            // Handle other types of scriptPubKeys here
-//                            address = "Non-standard script";
-//                        }
-
-//                        return new
-//                        {
-//                            Address = address,
-//                            Value = output.Value.ToDecimal(MoneyUnit.BTC).ToString()
-//                        };
-//                    }).ToList();
-
-//                    return new
-//                    {
-//                        TransactionId = tx.GetHash().ToString(),
-//                        TotalValue = tx.TotalOut.ToDecimal(MoneyUnit.BTC).ToString(),
-//                        Outputs = outputs
-//                    };
-//                }).ToList(),
-//                Nonce = nonce.ToString(),
-//                Difficulty = difficulty.ToString(),
-//                HashVerification = hashVerification.ToString()
-//            };
-
-//            return JsonConvert.SerializeObject(blockData);
-//        }
-//    }
-//}
