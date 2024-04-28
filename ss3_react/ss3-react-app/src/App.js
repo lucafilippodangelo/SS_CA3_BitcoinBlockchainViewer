@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BitcoinEvents from './components/BitcoinEvents';
-import { Table, Container, Row, Col, Form, Pagination } from 'react-bootstrap';
+import { Table, Container, Row, Col, Form, Pagination, Tab, Tabs } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CustomPagination = ({ currentPage, totalPages, onPageChange }) => {
@@ -79,11 +79,11 @@ const BlockQueueTable = ({ blockQueue }) => {
       {blockQueue.map((block, index) => (
         <div key={index}>
           <Row>
-          <Col md={12}>
-            {/* LD some space */}
-            <div style={{ height: '50px' }}></div>
-          </Col>
-        </Row>
+            <Col md={12}>
+              {/* LD some space */}
+              <div style={{ height: '50px' }}></div>
+            </Col>
+          </Row>
           <Row>
             <Col md={12}>
               <h6>Block: {block.content.Hash}</h6>
@@ -134,9 +134,6 @@ const BlockQueueTable = ({ blockQueue }) => {
               />
             </Col>
           </Row>
-          <row>
-
-          </row>
         </div>
       ))}
     </Container>
@@ -146,6 +143,7 @@ const BlockQueueTable = ({ blockQueue }) => {
 function App() {
   const [latestBitcoinEvents, setLatestBitcoinEvents] = useState([]);
   const [blockQueue, setBlockQueue] = useState([]);
+  const [activeTab, setActiveTab] = useState('blocks');
 
   useEffect(() => {
     //LD Keep the most recent three blocks
@@ -172,36 +170,66 @@ function App() {
       <BitcoinEvents onNewEvent={handleNewEvent} />
 
       <Container fluid>
-        <Row>
-          <Col md={12}>
-            <h1 style={{ textAlign: 'center' }}>Bitcoin Transactions</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
-            <Table striped bordered hover style={{ width: '90%', margin: 'auto' }}>
-              <thead>
-                <tr>
-                  <th>Event Type</th>
-                  <th>Hash</th>
-                </tr>
-              </thead>
-              <tbody>
-                {latestBitcoinEvents.map((event, index) => (
-                  <tr key={index}>
-                    <td>{event.eventType}</td>
-                    <td>{event.hash}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
+        <Tabs
+          id="tabs"
+          activeKey={activeTab}
+          onSelect={(key) => setActiveTab(key)}
+          className="mb-3"
+        >
+          <Tab eventKey="blocks" title="Blocks">
+            <Container>
+              <Row>
+                <Col md={12}>
+                  <h1 style={{ textAlign: 'center' }}>Bitcoin Blocks</h1>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <h6 style={{ textAlign: 'center' }}>Last 3 blocks, most recent at the top</h6>
+                </Col>
+              </Row>
+              <BlockQueueTable blockQueue={blockQueue} />
+            </Container>
+          </Tab>
+          <Tab eventKey="transactions" title="Transactions">
+            <Container>
+              <Row>
+                <Col md={12}>
+                  <h1 style={{ textAlign: 'center' }}>Bitcoin Transactions</h1>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <h6 style={{ textAlign: 'center' }}>Last 10 Transactions, most recent at the top</h6>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <Table striped bordered hover style={{ width: '90%', margin: 'auto' }}>
+                    <thead>
+                      <tr>
+                        <th>Event Type</th>
+                        <th>Hash</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {latestBitcoinEvents.map((event, index) => (
+                        <tr key={index}>
+                          <td>{event.eventType}</td>
+                          <td>{event.hash}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </Col>
+              </Row>
+            </Container>
+          </Tab>
+        </Tabs>
       </Container>
-
-      <BlockQueueTable blockQueue={blockQueue} />
     </div>
   );
 }
 
 export default App;
+
