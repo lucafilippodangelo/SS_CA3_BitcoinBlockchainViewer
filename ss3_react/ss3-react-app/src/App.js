@@ -55,23 +55,16 @@ const CustomPagination = ({ currentPage, totalPages, onPageChange }) => {
 };
 
 
-
-
-
-
-
-
-
-
 const BlockQueueTable = ({ blockQueue }) => {
     const [paginationStatus, setPaginationStatus] = useState({});
     const [totalPages, setTotalPages] = useState({}); 
-  
+    const itemsPerPage = 10;
+
     useEffect(() => {
       const updatedTotalPages = {};
       blockQueue.forEach(block => {
         const totalTransactions = block.content.Transactions.length;
-        updatedTotalPages[block.content.Hash] = Math.ceil(totalTransactions / 10); 
+        updatedTotalPages[block.content.Hash] = Math.ceil(totalTransactions / itemsPerPage); 
       });
       setTotalPages(updatedTotalPages);
     }, [blockQueue]);
@@ -89,7 +82,7 @@ const BlockQueueTable = ({ blockQueue }) => {
           <div key={index}>
             <h2>Block {block.content.Hash}</h2>
             <p>Timestamp: {block.content.Timestamp}</p>
-            <p>Nonce: {block.content.Nonce}</p>
+            <p>Nonc kkk e: {block.content.Nonce}</p>
             <p>Difficulty: {block.content.Difficulty}</p>
             <p>Hash Verification: {block.content.HashVerification}</p>
   
@@ -101,7 +94,7 @@ const BlockQueueTable = ({ blockQueue }) => {
                 </tr>
               </thead>
               <tbody>
-                {block.content.Transactions.slice((paginationStatus[block.content.Hash] || 1) * 10 - 10, (paginationStatus[block.content.Hash] || 1) * 10).map((tx, txIndex) => (
+                {block.content.Transactions.slice((paginationStatus[block.content.Hash] || 1) * itemsPerPage - itemsPerPage, (paginationStatus[block.content.Hash] || 1) * itemsPerPage).map((tx, txIndex) => (
                   <tr key={txIndex}>
                     <td>{tx.TransactionId}</td>
                     <td>{tx.TotalValue}</td>
@@ -132,17 +125,16 @@ const BlockQueueTable = ({ blockQueue }) => {
 function App() {
   const [latestBitcoinEvents, setLatestBitcoinEvents] = useState([]);
   const [blockQueue, setBlockQueue] = useState([]);
-  const [blockPage, setBlockPage] = useState({});
 
   useEffect(() => {
-    // Keep the most recent three blocks
+    //LD Keep the most recent three blocks
     setBlockQueue(prevQueue => prevQueue.slice(0, 3));
   }, [blockQueue]);
 
   const handleNewEvent = (eventType, eventData) => {
     if (eventType === 'Transaction') {
       setLatestBitcoinEvents(prevEvents => [
-        { eventType: 'BitcoinEvent', hash: eventData },
+        { eventType: 'Transaction', hash: eventData },
         ...prevEvents.slice(0, 9)
       ]);
     } else {
@@ -151,10 +143,6 @@ function App() {
         { content: parsedEventData },
         ...prevQueue
       ]);
-      setBlockPage(prevPageState => ({
-        ...prevPageState,
-        [parsedEventData.BlockId]: 0
-      }));
     }
   };
 
@@ -163,22 +151,23 @@ function App() {
       <BitcoinEvents onNewEvent={handleNewEvent} />
 
       <h1>Bitcoin Transactions</h1>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Event Type</th>
-            <th>Hash</th>
-          </tr>
-        </thead>
-        <tbody>
-          {latestBitcoinEvents.map((event, index) => (
-            <tr key={index}>
-              <td>{event.eventType}</td>
-              <td>{event.hash}</td>
+
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Event Type</th>
+              <th>Hash</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {latestBitcoinEvents.map((event, index) => (
+              <tr key={index}>
+                <td>{event.eventType}</td>
+                <td>{event.hash}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
 
       <h1>Block Events</h1>
       <BlockQueueTable blockQueue={blockQueue} />

@@ -10,16 +10,16 @@ namespace ss3_back.Helpers
         {
             var blockData = new
             {
-                Timestamp = timestamp.ToString("yyyy-MM-ddTHH:mm:ss.fffffffzzz"),
+                Timestamp = timestamp.ToString("dd/MM/yyyy HH:mm:ss") + "(UTC - Block Timestamp)",
                 Transactions = transactions.Select(tx =>
                 {
-                    // Calculate total value for the transaction
+                    //LD Calculate total value for the transaction
                     decimal totalValue = tx.Outputs.Sum(output => output.Value.ToDecimal(MoneyUnit.BTC));
 
                     return new
                     {
                         TransactionId = tx.GetHash().ToString(),
-                        TotalValue = totalValue.ToString() // Include total value in the transaction
+                        TotalValue = totalValue.ToString() //LD Include total value in the transaction
                     };
                 }).ToList(),
                 Nonce = nonce.ToString(),

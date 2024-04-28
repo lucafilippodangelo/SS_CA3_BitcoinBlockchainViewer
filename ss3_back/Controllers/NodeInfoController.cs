@@ -112,14 +112,13 @@ namespace ss3.Controllers
 
                                 Console.WriteLine($"Received {eventType} event: {item.Hash}");
 
-                                //LD if transaction send
+                                //LD if transaction
                                 if (item.Type.HasFlag(InventoryType.MSG_TX))
                                 {
                                     await _hubContext.Clients.All.SendAsync("ReceiveTransactionEvent", eventType.ToString(), item.Hash.ToString());
                                 }
                                 
-
-                                //LD if block request block data
+                                //LD if block 
                                 if (item.Type.HasFlag(InventoryType.MSG_BLOCK))
                                 {
                                     node.SendMessage(new GetDataPayload(item));
@@ -129,7 +128,6 @@ namespace ss3.Controllers
                         }
                         else if (e.Message.Payload is BlockPayload blockPayload)
                         {
-
                             BlockHeader header = blockPayload.Object.Header;
 
                             DateTimeOffset timestamp = header.BlockTime;
