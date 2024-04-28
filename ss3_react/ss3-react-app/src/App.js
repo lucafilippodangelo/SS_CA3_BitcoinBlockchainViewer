@@ -3,6 +3,8 @@ import BitcoinEvents from './components/BitcoinEvents';
 import { Table, Container, Row, Col, Form, Pagination, Tab, Tabs } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const itemsPerPage = 10;
+
 const CustomPagination = ({ currentPage, totalPages, onPageChange }) => {
   const [selectedPage, setSelectedPage] = useState(currentPage);
 
@@ -53,19 +55,8 @@ const CustomPagination = ({ currentPage, totalPages, onPageChange }) => {
   );
 };
 
-const BlockQueueTable = ({ blockQueue }) => {
+const BlockQueueTable = ({ blockQueue, totalPages }) => {
   const [paginationStatus, setPaginationStatus] = useState({});
-  const [totalPages, setTotalPages] = useState({});
-  const itemsPerPage = 10;
-
-  useEffect(() => {
-    const updatedTotalPages = {};
-    blockQueue.forEach(block => {
-      const totalTransactions = block.content.Transactions.length;
-      updatedTotalPages[block.content.Hash] = Math.ceil(totalTransactions / itemsPerPage);
-    });
-    setTotalPages(updatedTotalPages);
-  }, [blockQueue]);
 
   const handlePaginationClick = (hash, pageNumber) => {
     setPaginationStatus(prevStatus => ({
@@ -144,10 +135,23 @@ function App() {
   const [latestBitcoinEvents, setLatestBitcoinEvents] = useState([]);
   const [blockQueue, setBlockQueue] = useState([]);
   const [activeTab, setActiveTab] = useState('blocks');
+  const [totalPages, setTotalPages] = useState({});
 
   useEffect(() => {
     //LD Keep the most recent three blocks
-    setBlockQueue(prevQueue => prevQueue.slice(0, 3));
+    if (blockQueue.length > 3) { //LD stet state was hitting use effect again because of rerendering
+      setBlockQueue(prevQueue => prevQueue.slice(0, 3));
+    }
+  }, [blockQueue]);
+
+  //LD total pages for the block when blockQueue changes
+  useEffect(() => {
+    const updatedTotalPages = {};
+    blockQueue.forEach(block => {
+      const totalTransactions = block.content.Transactions.length;
+      updatedTotalPages[block.content.Hash] = Math.ceil(totalTransactions / itemsPerPage); 
+    });
+    setTotalPages(updatedTotalPages);
   }, [blockQueue]);
 
   const handleNewEvent = (eventType, eventData) => {
@@ -188,7 +192,7 @@ function App() {
                   <h6 style={{ textAlign: 'center' }}>Last 3 blocks, most recent at the top</h6>
                 </Col>
               </Row>
-              <BlockQueueTable blockQueue={blockQueue} />
+              <BlockQueueTable blockQueue={blockQueue} totalPages={totalPages} />
             </Container>
           </Tab>
           <Tab eventKey="transactions" title="Transactions">
@@ -232,4 +236,6 @@ function App() {
 }
 
 export default App;
+
+
 
