@@ -124,7 +124,7 @@ namespace ss3.Controllers
                                 {
                                    
                                     //LD the below should request raw transaction data FOR EACH INCOMING TRANSACTION
-                                    node.SendMessage(new GetDataPayload(item));
+                                    //node.SendMessage(new GetDataPayload(item));
 
                                     await _hubContext.Clients.All.SendAsync("ReceiveTransactionEvent", eventType.ToString(), item.Hash.ToString());
                                 }
@@ -165,16 +165,16 @@ namespace ss3.Controllers
                             await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonData);
 
                         }
-                        else if (e.Message.Payload is TxPayload txPayload)
-                        {
+                        //else if (e.Message.Payload is TxPayload txPayload)
+                        //{
 
-                            NBitcoin.Transaction transaction = txPayload.Object;
-                            byte[] rawTransactionData = transaction.ToBytes();
+                        //    NBitcoin.Transaction transaction = txPayload.Object;
+                        //    byte[] rawTransactionData = transaction.ToBytes();
 
-                            //LD TEST, TRY TO PROCESS RAW DATA FOR EACH TRANSACTION?
-                            ProcessRawTransactionData.ProcessRawTransactionDataMethod(rawTransactionData);
+                        //    //LD TEST, TRY TO PROCESS RAW DATA FOR EACH TRANSACTION?
+                        //    string transactionJson = ProcessRawTransactionData.ProcessRawTransactionDataMethod(rawTransactionData);
 
-                        }
+                        //}
                         else
                         {
                             Console.WriteLine($"LD OTHER Received message: {e.Message.Payload}");

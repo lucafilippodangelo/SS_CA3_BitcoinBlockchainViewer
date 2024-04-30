@@ -13,8 +13,7 @@ namespace ss3_back.Helpers
                 Timestamp = timestamp.ToString("dd/MM/yyyy HH:mm:ss") + "(UTC - Block Timestamp)",
                 Transactions = transactions.Select(tx =>
                 {
-                    Console.WriteLine(" ***** LD transaction details :"); //hexadecimal format
-                    ProcessRawTransactionData.ProcessRawTransactionDataMethod(tx.ToBytes());
+                    //string transactionJson = ProcessRawTransactionData.ProcessRawTransactionDataMethod(tx.ToBytes());
 
                     //LD Calculate total value for the transaction
                     decimal totalValue = tx.Outputs.Sum(output => output.Value.ToDecimal(MoneyUnit.BTC));
@@ -22,8 +21,10 @@ namespace ss3_back.Helpers
                     return new
                     {
                         TransactionId = tx.GetHash().ToString(),
-                        TotalValue = totalValue.ToString() //LD Include total value in the transaction
-                    };
+                        TotalValue = totalValue.ToString(), //LD Include total value in the transaction
+                        TransactionRaw = JsonConvert.DeserializeObject(ProcessRawTransactionData.ProcessRawTransactionDataMethod(tx.ToBytes()))
+
+                };
                 }).ToList(),
                 Nonce = nonce.ToString(),
                 Difficulty = difficulty.ToString(),
