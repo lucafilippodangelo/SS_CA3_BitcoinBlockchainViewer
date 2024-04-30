@@ -82,6 +82,219 @@ namespace ss3.Controllers
         {
             try
             {
+
+                //LD SIMULATION SENDING A BLOCK EVENT *****************************************************
+                var blockData = new
+                {
+                    Timestamp = "30/04/2024 08:06:14(UTC - Block Timestamp)",
+                    Transactions = new[]
+                    {
+                
+                                                    new
+                                                    {
+                                                        TransactionId = "b5d096a2f62821311ecc110e5ba0483a202df5aa1da42b91e5885c2540ea4f31",
+                                                        TotalValue = "0.62173947",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-60-3E-97-68-18-C1-F7-34-CE-14-F8",
+                                                            PayloadLength = 2970077826,
+                                                            Checksum = "67-65-B0-88"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    },
+                                                    new
+                                                    {
+                                                        TransactionId = "740ca1eb216960deb30fcfd5e81722b77fda91471313accf5f27aa145536b747",
+                                                        TotalValue = "0.00093022",
+                                                        TransactionRaw = new
+                                                        {
+                                                            MagicNumber = 16777216,
+                                                            Command = "01-D4-21-3B-8A-78-B6-42-A4-62-0D-C7",
+                                                            PayloadLength = 2893358498,
+                                                            Checksum = "A7-0C-D3-2B"
+                                                        }
+                                                    }
+                    },
+                    Nonce = "2095658546",
+                    Difficulty = "88104191118793.16",
+                    HashVerification = "True",
+                    Hash = "000000000000000000018815b37126242a916666dd4aa7f9d6cf540aca24417e"
+                };
+
+                string jsonData = JsonConvert.SerializeObject(blockData, Formatting.None);
+
+                await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonData);
+                //LD END SIMULATION SENDING A BLOCK EVENT *************************************************
+
+
                 //LD DYNAMIC IP
                 //IPAddress[] addresses = Dns.GetHostAddresses("seed.bitcoin.sipa.be");
                 //Random random = new Random();
