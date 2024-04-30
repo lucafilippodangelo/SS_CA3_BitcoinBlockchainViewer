@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using NBitcoin;
+using NBitcoin.Crypto;
+using NBitcoin.DataEncoders;
 using NBitcoin.Protocol;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -9,18 +11,21 @@ using ss3_back.SignalR;
 using System;
 using System.Net;
 using System.Numerics;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace ss3.Controllers
 {
-
-
     [ApiController]
     [Route("api/[controller]")]
     public class NodeInfoController : ControllerBase
     {
+
+       
+
+
         static BigInteger GenerateRandomUInt256BlockHash()
         {
             Random rand = new Random();
@@ -99,6 +104,8 @@ namespace ss3.Controllers
 
                     node.MessageReceived += async (sender, e) =>
                     {
+                       
+
                         if (e.Message.Payload is InvPayload invPayload)
                         {
                             foreach (InventoryVector item in invPayload.Inventory)
@@ -115,6 +122,10 @@ namespace ss3.Controllers
                                 //LD if transaction
                                 if (item.Type.HasFlag(InventoryType.MSG_TX))
                                 {
+                                   
+                                    //LD the below should request raw transaction data FOR EACH INCOMING TRANSACTION
+                                    node.SendMessage(new GetDataPayload(item));
+
                                     await _hubContext.Clients.All.SendAsync("ReceiveTransactionEvent", eventType.ToString(), item.Hash.ToString());
                                 }
                                 
@@ -144,7 +155,7 @@ namespace ss3.Controllers
                             bool hashVerification = computedHash == blockHash;
                             Console.WriteLine(hashVerification ? "Hash verified" : "Hash not verified");
 
-                            // LD Transactions
+                            //LD Transactions
                             Block block = blockPayload.Object;
                             var transactions = block.Transactions;
 
@@ -154,7 +165,16 @@ namespace ss3.Controllers
                             await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonData);
 
                         }
+                        else if (e.Message.Payload is TxPayload txPayload)
+                        {
 
+                            NBitcoin.Transaction transaction = txPayload.Object;
+                            byte[] rawTransactionData = transaction.ToBytes();
+
+                            //LD TEST, TRY TO PROCESS RAW DATA FOR EACH TRANSACTION?
+                            ProcessRawTransactionData.ProcessRawTransactionDataMethod(rawTransactionData);
+
+                        }
                         else
                         {
                             Console.WriteLine($"LD OTHER Received message: {e.Message.Payload}");
