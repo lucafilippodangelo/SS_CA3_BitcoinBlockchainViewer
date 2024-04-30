@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BitcoinEvents from './components/BitcoinEvents';
-import { Table, Container, Row, Col, Form, Pagination, Tab, Tabs } from 'react-bootstrap';
+import { Table, Container, Row, Col, Form, Pagination, Tab, Tabs, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const itemsPerPage = 10;
@@ -57,6 +57,7 @@ const CustomPagination = ({ currentPage, totalPages, onPageChange }) => {
 
 const BlockQueueTable = ({ blockQueue, totalPages }) => {
   const [paginationStatus, setPaginationStatus] = useState({});
+  const [expandedTransactions, setExpandedTransactions] = useState([]);
 
   const handlePaginationClick = (hash, pageNumber) => {
     setPaginationStatus(prevStatus => ({
@@ -65,13 +66,21 @@ const BlockQueueTable = ({ blockQueue, totalPages }) => {
     }));
   };
 
+  const toggleTransaction = (blockIndex, txIndex, currentPage) => {
+    const expandedIndex = expandedTransactions.findIndex(item => item.blockIndex === blockIndex && item.txIndex === txIndex && item.page === currentPage);
+    if (expandedIndex !== -1) {
+      setExpandedTransactions(prevExpanded => prevExpanded.filter((_, index) => index !== expandedIndex));
+    } else {
+      setExpandedTransactions(prevExpanded => [...prevExpanded, { blockIndex, txIndex, page: currentPage }]);
+    }
+  };
+
   return (
     <Container fluid>
-      {blockQueue.map((block, index) => (
-        <div key={index}>
+      {blockQueue.map((block, blockIndex) => (
+        <div key={blockIndex}>
           <Row>
             <Col md={12}>
-              {/* LD some space */}
               <div style={{ height: '50px' }}></div>
             </Col>
           </Row>
@@ -103,15 +112,26 @@ const BlockQueueTable = ({ blockQueue, totalPages }) => {
                   <tr>
                     <th>Transaction ID</th>
                     <th>Total Value</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
-                  {block.content.Transactions.slice((paginationStatus[block.content.Hash] || 1) * itemsPerPage - itemsPerPage, (paginationStatus[block.content.Hash] || 1) * itemsPerPage).map((tx, txIndex) => (
-                    <tr key={txIndex}>
+                {block.content.Transactions.slice((paginationStatus[block.content.Hash] || 1) * itemsPerPage - itemsPerPage, (paginationStatus[block.content.Hash] || 1) * itemsPerPage).map((tx, txIndex) => (
+                  <React.Fragment key={txIndex}>
+                    <tr onClick={() => toggleTransaction(blockIndex, txIndex, paginationStatus[block.content.Hash] || 1)} style={{ cursor: 'pointer' }}>
                       <td>{tx.TransactionId}</td>
                       <td>{tx.TotalValue}</td>
-                    </tr>
-                  ))}
+                   </tr> 
+                    {expandedTransactions.some(item => item.blockIndex === blockIndex && item.txIndex === txIndex && item.page === (paginationStatus[block.content.Hash] || 1)) && (
+                      <tr>
+                        <td colSpan="3">
+                          <pre>{JSON.stringify(tx.TransactionRaw, null, 2)}</pre>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                ))}
+
                 </tbody>
               </Table>
             </Col>
@@ -131,25 +151,24 @@ const BlockQueueTable = ({ blockQueue, totalPages }) => {
   );
 };
 
+
 function App() {
   const [latestBitcoinEvents, setLatestBitcoinEvents] = useState([]);
   const [blockQueue, setBlockQueue] = useState([]);
   const [activeTab, setActiveTab] = useState('blocks');
   const [totalPages, setTotalPages] = useState({});
 
-  useEffect(() => {
     //LD Keep the most recent three blocks
     if (blockQueue.length > 3) { //LD stet state was hitting use effect again because of rerendering
       setBlockQueue(prevQueue => prevQueue.slice(0, 3));
     }
   }, [blockQueue]);
 
-  //LD total pages for the block when blockQueue changes
   useEffect(() => {
     const updatedTotalPages = {};
     blockQueue.forEach(block => {
       const totalTransactions = block.content.Transactions.length;
-      updatedTotalPages[block.content.Hash] = Math.ceil(totalTransactions / itemsPerPage); 
+      updatedTotalPages[block.content.Hash] = Math.ceil(totalTransactions / itemsPerPage);
     });
     setTotalPages(updatedTotalPages);
   }, [blockQueue]);
@@ -236,6 +255,3 @@ function App() {
 }
 
 export default App;
-
-
-
