@@ -84,6 +84,7 @@ namespace ss3.Controllers
             {
 
                 //LD SIMULATION SENDING A BLOCK EVENT *****************************************************
+                /*
                 var blockData = new
                 {
                     Timestamp = "30/04/2024 08:06:14(UTC - Block Timestamp)",
@@ -292,6 +293,7 @@ namespace ss3.Controllers
                 string jsonData = JsonConvert.SerializeObject(blockData, Formatting.None);
 
                 await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonData);
+                */
                 //LD END SIMULATION SENDING A BLOCK EVENT *************************************************
 
 

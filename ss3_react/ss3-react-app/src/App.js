@@ -158,8 +158,8 @@ function App() {
   const [activeTab, setActiveTab] = useState('blocks');
   const [totalPages, setTotalPages] = useState({});
 
-    //LD Keep the most recent three blocks
-    if (blockQueue.length > 3) { //LD stet state was hitting use effect again because of rerendering
+  useEffect(() => {
+    if (blockQueue.length > 3) {
       setBlockQueue(prevQueue => prevQueue.slice(0, 3));
     }
   }, [blockQueue]);
