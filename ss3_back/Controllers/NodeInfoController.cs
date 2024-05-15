@@ -23,52 +23,6 @@ namespace ss3.Controllers
     public class NodeInfoController : ControllerBase
     {
 
-       
-
-
-        static BigInteger GenerateRandomUInt256BlockHash()
-        {
-            Random rand = new Random();
-            byte[] bytes = new byte[32];
-            rand.NextBytes(bytes);
-            BigInteger blockHash = new BigInteger(bytes);
-
-            return blockHash;
-        }
-
-        class Transaction
-        {
-            public string TransactionId { get; set; }
-            public double TotalValue { get; set; }
-        }
-
-        static List<Transaction> GenerateRandomTransactions(int count)
-        {
-            Random random = new Random();
-            List<Transaction> transactions = new List<Transaction>();
-
-            for (int i = 0; i < count; i++)
-            {
-                string transactionId = i + " - " + Guid.NewGuid().ToString("N");
-                double totalValue = random.NextDouble() * 100; // Generate random total value
-
-                Transaction transaction = new Transaction
-                {
-                    TransactionId = transactionId,
-                    TotalValue = totalValue
-                };
-
-                transactions.Add(transaction);
-            }
-
-            return transactions;
-        }
-
-
-
-
-
-
         private readonly IHubContext<BitcoinHub> _hubContext;
 
         public NodeInfoController(IHubContext<BitcoinHub> hubContext)
@@ -83,7 +37,7 @@ namespace ss3.Controllers
             try
             {
 
-                //LD SIMULATION SENDING A BLOCK EVENT *****************************************************
+                //LD START SIMULATION SEND A BLOCK EVENT *****************************************************
                 /*
                 var blockData = new
                 {
@@ -294,7 +248,7 @@ namespace ss3.Controllers
 
                 await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonData);
                 */
-                //LD END SIMULATION SENDING A BLOCK EVENT *************************************************
+                //LD END SIMULATION SEND A BLOCK EVENT *************************************************
 
 
                 //LD DYNAMIC IP
@@ -304,6 +258,7 @@ namespace ss3.Controllers
                 //Console.WriteLine($" 000 IP {selectedAddress}");
 
                 ///*
+                ///
                 //LD STATIC IP
                 IPAddress selectedAddress = IPAddress.Parse("66.94.117.48");
                 Console.WriteLine($"IP {selectedAddress}");
@@ -337,13 +292,8 @@ namespace ss3.Controllers
                                 //LD if transaction
                                 if (item.Type.HasFlag(InventoryType.MSG_TX))
                                 {
-                                   
-                                    //LD the below should request raw transaction data FOR EACH INCOMING TRANSACTION
-                                    //node.SendMessage(new GetDataPayload(item));
-
                                     await _hubContext.Clients.All.SendAsync("ReceiveTransactionEvent", eventType.ToString(), item.Hash.ToString());
                                 }
-                                
                                 //LD if block 
                                 if (item.Type.HasFlag(InventoryType.MSG_BLOCK))
                                 {
@@ -374,22 +324,12 @@ namespace ss3.Controllers
                             Block block = blockPayload.Object;
                             var transactions = block.Transactions;
 
-                            var jsonData = CreateBlockData.GenerateJson(timestamp, transactions.ToArray(), nonce, difficulty, hashVerification, blockHash);
+                            var jsonStringData = CreateBlockData.GenerateJsonString(timestamp, transactions.ToArray(), nonce, difficulty, hashVerification, blockHash);
 
                             //LD Send block
-                            await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonData);
+                            await _hubContext.Clients.All.SendAsync("ReceiveBlockEvent", jsonStringData);
 
                         }
-                        //else if (e.Message.Payload is TxPayload txPayload)
-                        //{
-
-                        //    NBitcoin.Transaction transaction = txPayload.Object;
-                        //    byte[] rawTransactionData = transaction.ToBytes();
-
-                        //    //LD TEST, TRY TO PROCESS RAW DATA FOR EACH TRANSACTION?
-                        //    string transactionJson = ProcessRawTransactionData.ProcessRawTransactionDataMethod(rawTransactionData);
-
-                        //}
                         else
                         {
                             Console.WriteLine($"LD OTHER Received message: {e.Message.Payload}");

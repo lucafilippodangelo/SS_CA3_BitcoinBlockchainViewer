@@ -6,7 +6,7 @@ namespace ss3_back.Helpers
 {
     public class CreateBlockData
     {
-        public static string GenerateJson(DateTimeOffset timestamp, Transaction[] transactions, uint nonce, double difficulty, bool hashVerification, uint256 hash)
+        public static string GenerateJsonString(DateTimeOffset timestamp, Transaction[] transactions, uint nonce, double difficulty, bool hashVerification, uint256 hash)
         {
             var blockData = new
             {
@@ -22,7 +22,7 @@ namespace ss3_back.Helpers
                     {
                         TransactionId = tx.GetHash().ToString(),
                         TotalValue = totalValue.ToString(), //LD Include total value in the transaction
-                        TransactionRaw = JsonConvert.DeserializeObject(ProcessRawTransactionData.ProcessRawTransactionDataMethod(tx.ToBytes()))
+                        TransactionRaw = ProcessRawTransactionData.ProcessRawTransactionDataMethod(tx.ToBytes())
 
                 };
                 }).ToList(),
@@ -32,7 +32,7 @@ namespace ss3_back.Helpers
                 Hash = hash.ToString()
             };
 
-            return JsonConvert.SerializeObject(blockData);
+            return JsonConvert.SerializeObject(blockData, Formatting.Indented);
         }
     }
 }

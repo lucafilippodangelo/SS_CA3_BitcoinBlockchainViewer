@@ -82,7 +82,7 @@ namespace ss3_back.UnitTests
             uint256 randomUint256 = new uint256(randomBytes);
 
 
-            var jsonData = CreateBlockData.GenerateJson(timestamp, transactions, nonce, difficulty, hashVerification, randomUint256);
+            var jsonData = CreateBlockData.GenerateJsonString(timestamp, transactions, nonce, difficulty, hashVerification, randomUint256);
 
 
             Assert.NotNull(jsonData);

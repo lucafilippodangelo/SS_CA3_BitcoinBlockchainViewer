@@ -15,4 +15,6 @@
 /bin/
 /obj/
 /out/
-ss3_back/.vs/ProjectEvaluation/ss3_back.projects.v7.bin
+/ss3_react/ss3-react-app/node_modules
+/ss3_back/bin
+/ss3_back/.vs
