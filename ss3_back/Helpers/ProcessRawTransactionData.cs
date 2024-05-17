@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Text;
 
 namespace ss3_back.Helpers
@@ -7,21 +6,16 @@ namespace ss3_back.Helpers
     public class ProcessRawTransactionData
     {
         /// <summary>
-        /// MagicNumber:
-        ///The MagicNumber is a fixed 4 - byte(32 - bit) value used to identify the Bitcoin network.For the main network, this value 
-        ///is 0xD9B4BEF9.It helps ensure that nodes are communicating on the correct network.It is measured in bytes.
-        ///Command:
-        ///The Command field is a 12 - byte(96 - bit) ASCII string that specifies the type of message being sent(e.g., "version", 
-        ///"verack", "tx", "block").It is null - padded if the command is less than 12 bytes.It is measured in bytes.
-        ///PayloadLength:
-        ///The PayloadLength is a 4 - byte(32 - bit) unsigned integer that specifies the size of the payload(the actual data) 
-        ///in bytes.This indicates how many bytes of data follow the header.It is measured in bytes.
-        ///Checksum:
-        ///The Checksum is a 4 - byte(32 - bit) field that provides a checksum of the payload to ensure data integrity.It is calculated 
-        ///as the first 4 bytes of the double SHA - 256 hash of the payload.It is measured in bytes.
+        /// LD this method parses raw transaction data and extracts: magic number, command, payload length, 
+        /// payload(first 20 bytes for performance reasons) and Checksum. Details:
+        /// magic number: it's fixed 4-byte value used to identify the Bitcoin network. I'm getting rid of "-" and converting to little-endian format.
+        /// command:12-byte ASCII string specifying the type of message being sent ("version", "tx").
+        /// payload length: this is a 4-byte unsigned integer indicating the size of the payload in bytes. I'm returning to Front end an INT representing the number of bytes
+        /// checksum: 4 bytes to provide a checksum of the payload to ensure data integrity.
+        /// payload: after parsing I'm returning the first 
         /// </summary>
-        /// <param name="rawTransactionData"></param>
-        /// <returns></returns>
+        /// <param name="rawTransactionData">byte array containing raw transaction data.</param>
+        /// <returns>JObject containing parsed transaction data.</returns>
         public static JObject ProcessRawTransactionDataMethod(byte[] rawTransactionData)
         {
             Dictionary<string, object> transactionData = new Dictionary<string, object>();
@@ -45,7 +39,7 @@ namespace ss3_back.Helpers
                     string command = BitConverter.ToString(commandBytes);
                     transactionData.Add("Command(bytes separated by hyphens): ", command);
 
-                    //LD Length of Payload
+                    //LD Length of Payload (think is better returning an int with the number of bytes, more readable than the size in bytes)
                     uint payloadLength = reader.ReadUInt32();
                     transactionData.Add("Payload Length: ", payloadLength+" bytes");
 
@@ -58,14 +52,14 @@ namespace ss3_back.Helpers
                     byte[] payload = reader.ReadBytes(bytesToRead);
                     transactionData.Add("Payload (bytes separated by hyphens, first 20 bytes displayed): ", BitConverter.ToString(payload));
 
-                    //LD Payload |Full(commented, we interactiong with kilobytes.)
+                    //LD Payload Full(commented, we interactiong with kilobytes.)
                     /*
                     int bytesRemaining = (int)payloadLength;
                     while (bytesRemaining > 0)
                     {
                         int chunkSize = Math.Min(bytesRemaining, 4096); //4096 bytes per time
                         byte[] payloadChunk = reader.ReadBytes(chunkSize);
-                        Console.WriteLine("LD Payload Chunk: " + BitConverter.ToString(payloadChunk));
+                        Console.WriteLine("LD TEST Payload Chunk: " + BitConverter.ToString(payloadChunk));
                         bytesRemaining -= chunkSize;
                     }
                     */
