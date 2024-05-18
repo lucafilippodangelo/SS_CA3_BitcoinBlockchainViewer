@@ -38,21 +38,26 @@
     - pull BE and FE from https://github.com/lucafilippodangelo/SS_CA3_BitcoinBlockchainViewer.git (you are collaborator)
     - run backend from terminal (sit in your local folder where solution file is(example "C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_back>") -> dotnet build -> dotnet run)
       ![Flow](ReadmeImages/BE_001.png)
+
       open in browswer "https://localhost:7057/swagger/index.html" -> click "get" -> click "try it out" -> click "Execute"
       ![Flow](ReadmeImages/FE_002.png)
+      
       transactions start to be received from node
       ![Flow](ReadmeImages/CO_003.png)
-      NOTE: depending on how busy the node is, transactiond may not be received. In that case please update IP in Back end
+      
+      NOTE: depending on how busy the node is, transactiond may not be received. In that case please update IP in Back End
       ![Flow](ReadmeImages/BE_009.png)
 
     - run front end (sit in your local folder where the root of the react solution is(example      "C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_react\ss3-react-app") ->npm install -> npm start)
     ![Flow](ReadmeImages/UI_004.png)
       - NOTE: if your front end does not run on port 3000 you need to update cors setup in backend, then rebuild. 
+
         ![Flow](ReadmeImages/BE_004.png)
 
 4. **How to use it. Screen shots and use cases**
 
     After executing step 3(building and running), open "http://localhost:3000" will be possible to see transactions starting to be rendered in transaction tab. The very last transaction received from Back end will be displayed in first row of the table. Open image in a new tab to see it fullsize.
+    
     ![Flow](ReadmeImages/UI_005.png)
 
     When a block is received it will be diplayed in "Blocks" tab of the web application.
