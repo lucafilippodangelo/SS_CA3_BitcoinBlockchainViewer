@@ -1,6 +1,13 @@
 # CA3 Luca D'Angelo
 
 1. **High Level Architecture**
+2. **Code**
+3. **Build and run the Application(including referenced dependencies)**
+4. **Use Cases**
+
+---
+
+1. **High Level Architecture**
     - Interaction Flow Diagram: ![Flow](ReadmeImages/img_flow.png)
     - Overview:
         - Back End
@@ -21,7 +28,7 @@
                 5. Interaction with back end: “BitcoinEvents.js” component connects to the backend's SignalR hub at https://localhost:7057/bitcoinHub (static) to receive real-time updates on Bitcoin transactions and blocks. When events are received the latest block or transaction state gets updated. Then data parsing/massaging and UI rendering! Yes super mega cool.
 
 2. **Code**
-    - Summaries in code(key classes):
+    - Summaries and logic description in code(key classes):
         1. Back End
             - NodeInfoController.cs
             - CreateBlockData.cs
@@ -54,7 +61,7 @@
 
         ![Flow](ReadmeImages/BE_004.png)
 
-4. **How to use it. Screen shots and use cases**
+4. **Use Cases**
 
     After executing step 3(building and running), open "http://localhost:3000" will be possible to see transactions starting to be rendered in transaction tab. The very last transaction received from Back end will be displayed in first row of the table. Open image in a new tab to see it fullsize.
     
