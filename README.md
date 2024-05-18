@@ -50,7 +50,7 @@
 
 4. **How to use it. Screen shots and use cases**
 
-    after step 3(building and running) open "http://localhost:3000" will be possible to see transactions starting to be rendered in transaction tab. The very last transaction will be displayed in first row of the table
-    ![Flow](ReadmeImages/UI_005.png)
+    after step 3(building and running) open "http://localhost:3000" will be possible to see transactions starting to be rendered in transaction tab. The very last transaction will be displayed in first row of the table. Click on image to see it fullsize
+    [![Flow](ReadmeImages/UI_005.png)](ReadmeImages/UI_005.png)
 
     It will be possible to 
