@@ -21,7 +21,7 @@
                 5. Interaction with back end: “BitcoinEvents.js” component connects to the backend's SignalR hub at https://localhost:7057/bitcoinHub (static) to receive real-time updates on Bitcoin transactions and blocks. When events are received the latest block or transaction state gets updated. Then data parsing/massaging and UI rendering! Yes super mega cool.
 
 2. **Code**
-    - Summaries in code:
+    - Summaries in code(key classes):
         1. Back End
             - NodeInfoController.cs
             - CreateBlockData.cs
@@ -33,7 +33,24 @@
             - BlockDisplay.js
             - BitcoinEvents.js
 
-3. How to build and run the application. Any possible dependency
+3. **Build and run the Application(including referenced dependencies)**
 
-4. How to use it. Screen shots and use cases
+    - pull BE and FE from https://github.com/lucafilippodangelo/SS_CA3_BitcoinBlockchainViewer.git (you are collaborator)
+    - run backend from terminal (sit in your local folder where solution file is(example "C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_back>") -> dotnet build -> dotnet run)
+      ![Flow](ReadmeImages/BE_001.png)
+      open in browswer "https://localhost:7057/swagger/index.html" -> click "get" -> click "try it out" -> click "Execute"
+      ![Flow](ReadmeImages/FE_002.png)
+      transactions start to be received from node
+      ![Flow](ReadmeImages/CO_003.png)
 
+    - run front end (sit in your local folder where the root of the react solution is(example      "C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_react\ss3-react-app") ->npm install -> npm start)
+    ![Flow](ReadmeImages/UI_004.png)
+      - NOTE: if your front end does not run on port 3000 you need to update cors setup in backend, then rebuild. 
+        ![Flow](ReadmeImages/BE_004.png)
+
+4. **How to use it. Screen shots and use cases**
+
+    after step 3(building and running) open "http://localhost:3000" will be possible to see transactions starting to be rendered in transaction tab. The very last transaction will be displayed in first row of the table
+    EXAMPLE IMAGE UI_005
+
+    It will be possible to 
