@@ -253,7 +253,7 @@ namespace ss3.Controllers
                 Console.WriteLine($" 000 IP {selectedAddressTemp}");
 
                 //LD Static IP assignment(dynamic IP resolution and assignment is not used because not all the addresses are working)
-                IPAddress selectedAddress = IPAddress.Parse("66.94.117.48");
+                IPAddress selectedAddress = IPAddress.Parse("66.94.117.48"); //81.83.45.130
                 Console.WriteLine($"IP {selectedAddress}");
 
                 //LD defining the peer endpoint

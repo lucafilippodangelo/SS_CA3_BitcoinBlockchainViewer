@@ -2,6 +2,14 @@ import React from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+/**
+ * TransactionDisplay.js component is basically handling the rendering of the latest
+ * bitcoins transactions in a table layout.
+ * It shows the event type and hash for each transaction.
+ * 
+ * Props:
+ * - latestBitcoinEvents: an array of objects representing the latest Bitcoin events(each has event type, not changing and the hash)
+ */
 const TransactionDisplay = ({ latestBitcoinEvents }) => {
   return (
     <Container>
