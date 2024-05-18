@@ -1,9 +1,7 @@
 # CA3 Luca D'Angelo
 
-## Architecture
-
-1. High Level Architecture
-    - Diagram: (draw.io)
+1. **High Level Architecture**
+    - Interaction Flow Diagram: ![Flow](ReadmeImages/img_flow.png)
     - Overview:
         - Back End
             - The back end was implemented utilizing ASP.NET Core API with SignalR for real-time communication and NBitcoin for interacting with the Bitcoin network. 
@@ -22,7 +20,7 @@
                 4. Components: Renders BitcoinEvents, BlockDisplay, and TransactionDisplay components.
                 5. Interaction with back end: “BitcoinEvents.js” component connects to the backend's SignalR hub at https://localhost:7057/bitcoinHub (static) to receive real-time updates on Bitcoin transactions and blocks. When events are received the latest block or transaction state gets updated. Then data parsing/massaging and UI rendering! Yes super mega cool.
 
-3. Code
+2. **Code**
     - Summaries in code:
         1. Back End
             - NodeInfoController.cs
@@ -35,7 +33,7 @@
             - BlockDisplay.js
             - BitcoinEvents.js
 
-4. How to build and run the application. Any possible dependency
+3. How to build and run the application. Any possible dependency
 
-5. How to use it. Screen shots and use cases
+4. How to use it. Screen shots and use cases
 
