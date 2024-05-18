@@ -42,6 +42,8 @@
       ![Flow](ReadmeImages/FE_002.png)
       transactions start to be received from node
       ![Flow](ReadmeImages/CO_003.png)
+      NOTE: depending on how busy the node is, transactiond may not be received. In that case please update IP in Back end
+      ![Flow](ReadmeImages/BE_009.png)
 
     - run front end (sit in your local folder where the root of the react solution is(example      "C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_react\ss3-react-app") ->npm install -> npm start)
     ![Flow](ReadmeImages/UI_004.png)
@@ -50,7 +52,23 @@
 
 4. **How to use it. Screen shots and use cases**
 
-    after step 3(building and running) open "http://localhost:3000" will be possible to see transactions starting to be rendered in transaction tab. The very last transaction will be displayed in first row of the table. Click on image to see it fullsize
-    [![Flow](ReadmeImages/UI_005.png)](ReadmeImages/UI_005.png)
+    After executing step 3(building and running), open "http://localhost:3000" will be possible to see transactions starting to be rendered in transaction tab. The very last transaction received from Back end will be displayed in first row of the table. Open image in a new tab to see it fullsize.
+    ![Flow](ReadmeImages/UI_005.png)
 
-    It will be possible to 
+    When a block is received it will be diplayed in "Blocks" tab of the web application.
+    - In yellow, mapping of the block
+    - In azure, example of mapping of a block transaction
+
+    ![Flow](ReadmeImages/UI_006.png)
+
+    Some use cases around blocks:
+    - In green, most recent block will be rendered at the top. At the moment UI keeps in browser memory info for last 3 blocks received. Example: when the forth is received the oldest is overriden. 
+    - In Yellow, by clicking in a row transaction is possible to see transaction details. Payload is trimmed due to memory efficiency, at the moment the app is not using a DB.
+    - In Blue, each block can be independently paginated by buttons up/down or by selecting the specific page from dropdown. 
+        - the front end keeps memory of transactions for which details are displayed. As an example if in page 1 I click on row 3 to see transaction details, then I jump to page 3, then jump back on page one, page one will be rendered with details for row 3 expanded. Pretty cool I know :)
+
+    ![Flow](ReadmeImages/UI_007.png)
+
+    It's possible to use multi browser, multi tabs. A web app was created on purpose, allow flexibility, use browser memory, and gain from bootstrap out of the box benefits when it comes of resizing, be mobile friendly etc..
+
+    ![Flow](ReadmeImages/UI_008.png)
