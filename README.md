@@ -46,7 +46,8 @@
 
 3. **Build and run the Application(including referenced dependencies)**
 
-    - pull BE and FE from https://github.com/lucafilippodangelo/SS_CA3_BitcoinBlockchainViewer.git (Eoin you are collaborator)
+    - pull BE and FE from https://github.com/lucafilippodangelo/SS_CA3_BitcoinBlockchainViewer.git
+    - install .net core in your machine https://learn.microsoft.com/en-us/dotnet/core/install/
     - run backend from terminal 
       1. sit in your local folder where .net core solution file is located(example "C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_back>"
       2. then execute "dotnet build" 
