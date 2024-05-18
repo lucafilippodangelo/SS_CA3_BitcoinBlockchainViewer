@@ -5,7 +5,7 @@
 1. **Architecture**
 2. **Code**
 3. **Build and run the Application(including referenced dependencies)**
-4. **Use Cases**
+4. **Use Cases and functionalities**
 
 ---
 
@@ -79,7 +79,7 @@
 
         ![Flow](ReadmeImages/BE_004.png)
 
-4. **Use Cases**
+4. **Use Cases and functionalities**
 
     After executing step 3(building and running), open "http://localhost:3000" will be possible to see transactions starting to be rendered in transaction tab. The very last transaction received from Back end will be displayed in first row of the table. Open image in a new tab to see it fullsize.
     
@@ -93,7 +93,7 @@
 
     Some use cases around blocks:
     - In green, most recent block will be rendered at the top. At the moment UI keeps in browser memory info for last 3 blocks received. Example: after running the application, when the forth one is received the oldest(first received) is overriden. 
-    - In Yellow, by clicking in a row transaction is possible to see transaction details. Payload is trimmed for memory efficiency and allow fluent UX navigation, at the moment the app is not using a DB, I though it was out of scope for this CA to implement a more refined async solution using redus or a document DB.
+    - In Yellow, by clicking in one or more rows per page is possible to check out transactions details. Payload is trimmed for memory efficiency and allow fluent UX navigation. *****At the moment the app is not using a DB, I though it was out of scope and overkilling for this CA to implement a more refined async solution using redus or a document DB.
     - In Blue, each block can be independently be paginated by buttons up/down or by selecting the specific page from dropdown. 
         - the front end keeps memory of transactions for which details are displayed. As an example if in page 1 I click on row 3 to see transaction details, then I jump to page 3, then jump back on page one, page one will be rendered with details for row 3 expanded. This mechanism works independently between blocks.
 
