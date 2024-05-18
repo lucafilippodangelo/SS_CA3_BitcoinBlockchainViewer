@@ -1,4 +1,6 @@
-# CA3 Luca D'Angelo
+# CA3 Secure Systems Development - D23125106 Luca D'Angelo
+
+---
 
 1. **High Level Architecture**
 2. **Code**
@@ -8,7 +10,10 @@
 ---
 
 1. **High Level Architecture**
-    - Interaction Flow Diagram: ![Flow](ReadmeImages/img_flow.png)
+    - Interaction Flow Diagram: 
+    
+    ![Flow](ReadmeImages/img_flow.png)
+    
     - Overview:
         - Back End
             - The back end was implemented utilizing ASP.NET Core API with SignalR for real-time communication and NBitcoin for interacting with the Bitcoin network. 
