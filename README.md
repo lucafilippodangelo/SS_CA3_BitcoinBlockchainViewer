@@ -29,7 +29,7 @@
                 2. Event Handling: listens (in infinite loop until cancellation token) for new Bitcoin events (transactions and blocks) from the backend and updates the state accordingly.
                 3. Tabs: Uses react-bootstrap Tabs to switch between "Blocks" and "Transactions" views. 
                 4. Components: Renders BitcoinEvents, BlockDisplay, and TransactionDisplay components.
-                5. Interaction with back end: “BitcoinEvents.js” component connects to the backend's SignalR hub at https://localhost:7057/bitcoinHub (static in CA3 delivery) to receive real-time updates on Bitcoin transactions and blocks. When events are received the latest block or transaction state gets updated. Then data is parsed and minimally massaged prior UI rendering! Yes super mega cool!!!
+                5. Interaction with back end: “BitcoinEvents.js” component connects to the backend's SignalR hub at https://localhost:7057/bitcoinHub (static in CA3 delivery) to receive real-time updates on Bitcoin transactions and blocks. When events are received the latest block or transaction state gets updated. Then data is parsed and minimally massaged prior UI rendering! 
 
 2. **Code**
     - Summaries and logic description in code(key classes):
@@ -48,16 +48,16 @@
 
     - pull BE and FE from https://github.com/lucafilippodangelo/SS_CA3_BitcoinBlockchainViewer.git (Eoin you are collaborator)
     - run backend from terminal 
-      1. sit in your local folder where solution file is(example "C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_back>"
-      2. execute "dotnet build" 
-      3. execute "dotnet run"
+      1. sit in your local folder where .net core solution file is located(example "C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_back>"
+      2. then execute "dotnet build" 
+      3. then execute "dotnet run"
 
       ![Flow](ReadmeImages/BE_001.png)
 
       4. open in browswer "https://localhost:7057/swagger/index.html" 
-      5. click "get" 
-      6. click "try it out" 
-      7. click "Execute"
+      5. in "NodeInfo" controller action click "get" 
+      6. then click "try it out" 
+      7. then click "Execute"
 
       ![Flow](ReadmeImages/FE_002.png)
       
@@ -74,7 +74,7 @@
       3. execute "npm start"
 
     ![Flow](ReadmeImages/UI_004.png)
-    
+
       - NOTE: if your front end does not run on port 3000 you need to update cors setup in backend, then rebuild. 
 
         ![Flow](ReadmeImages/BE_004.png)
@@ -92,13 +92,13 @@
     ![Flow](ReadmeImages/UI_006.png)
 
     Some use cases around blocks:
-    - In green, most recent block will be rendered at the top. At the moment UI keeps in browser memory info for last 3 blocks received. Example: when the forth is received the oldest is overriden. 
-    - In Yellow, by clicking in a row transaction is possible to see transaction details. Payload is trimmed due to memory efficiency, at the moment the app is not using a DB.
-    - In Blue, each block can be independently paginated by buttons up/down or by selecting the specific page from dropdown. 
-        - the front end keeps memory of transactions for which details are displayed. As an example if in page 1 I click on row 3 to see transaction details, then I jump to page 3, then jump back on page one, page one will be rendered with details for row 3 expanded. Pretty cool I know :)
+    - In green, most recent block will be rendered at the top. At the moment UI keeps in browser memory info for last 3 blocks received. Example: after running the application, when the forth one is received the oldest(first received) is overriden. 
+    - In Yellow, by clicking in a row transaction is possible to see transaction details. Payload is trimmed for memory efficiency and allow fluent UX navigation, at the moment the app is not using a DB, I though it was out of scope for this CA to implement a more refined async solution using redus or a document DB.
+    - In Blue, each block can be independently be paginated by buttons up/down or by selecting the specific page from dropdown. 
+        - the front end keeps memory of transactions for which details are displayed. As an example if in page 1 I click on row 3 to see transaction details, then I jump to page 3, then jump back on page one, page one will be rendered with details for row 3 expanded. This mechanism works independently between blocks.
 
     ![Flow](ReadmeImages/UI_007.png)
 
-    It's possible to use multi browser, multi tabs. A web app was created on purpose, allow flexibility, use browser memory, and gain from bootstrap out of the box benefits when it comes of resizing, be mobile friendly etc..
+    It's possible to use multi browser, multi tabs. The web app and in general the net split with back end was implemented on purpose, allow flexibility, use browser memory, and gain from bootstrap out of the box benefits when it comes of resizing, be mobile friendly etc..
 
     ![Flow](ReadmeImages/UI_008.png)
