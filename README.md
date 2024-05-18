@@ -9,7 +9,7 @@
 
 ---
 
-1. **High Level Architecture**
+1. **Architecture**
     - Interaction Flow Diagram: 
     
     ![Flow](ReadmeImages/img_flow.png)
@@ -46,8 +46,8 @@
 
 3. **Build and run the Application(including referenced dependencies)**
 
-    - pull BE and FE from https://github.com/lucafilippodangelo/SS_CA3_BitcoinBlockchainViewer.git
     - install .net core in your machine https://learn.microsoft.com/en-us/dotnet/core/install/
+    - pull BE and FE from https://github.com/lucafilippodangelo/SS_CA3_BitcoinBlockchainViewer.git
     - run backend from terminal 
       1. sit in your local folder where .net core solution file is located(example "C:\Users\Luca\TUD\Web_Application_Architectures_10\SS_CA3_BitcoinBlockchainViewer\ss3_back>"
       2. then execute "dotnet build" 
@@ -62,11 +62,11 @@
 
       ![Flow](ReadmeImages/FE_002.png)
       
-      8. transactions start to be received from node and logged at console
+      8. the application will run, you will see a "spin" in swagger and transactions will start to be received from node and those will get logged at console.
 
       ![Flow](ReadmeImages/CO_003.png)
       
-      NOTE: depending on how busy the node is, transactiond may not be received. In that case please update IP in Back End
+      NOTE: depending on how busy the node is, transactiond may not be received. In that case please restart few times the back end or update IP.
       ![Flow](ReadmeImages/BE_009.png)
 
     - run front end from terminal
@@ -94,12 +94,12 @@
 
     Some use cases around blocks:
     - In green, most recent block will be rendered at the top. At the moment UI keeps in browser memory info for last 3 blocks received. Example: after running the application, when the forth one is received the oldest(first received) is overriden. 
-    - In Yellow, by clicking in one or more rows per page is possible to check out transactions details. Payload is trimmed for memory efficiency and allow fluent UX navigation. *****At the moment the app is not using a DB, I though it was out of scope and overkilling for this CA to implement a more refined async solution using redus or a document DB.
+    - In Yellow, by clicking in one or more rows per page is possible to check out transactions details. Payload is trimmed for memory efficiency and to allow fluent UX navigation. *At the moment the app is not using a DB, I wanted something quick and real time pushes, I though it was out of scope and overkilling for this CA to implement a more refined async solution using redus or a document DB.
     - In Blue, each block can be independently be paginated by buttons up/down or by selecting the specific page from dropdown. 
-        - the front end keeps memory of transactions for which details are displayed. As an example if in page 1 I click on row 3 to see transaction details, then I jump to page 3, then jump back on page one, page one will be rendered with details for row 3 expanded. This mechanism works independently between blocks.
+        - the front end keeps memory of transactions for which details are displayed. As an example if in page 1 I click on row 3 to see transaction details, then I jump to page 3, then jump back on page 1, page 1 will be rendered with details for row 3 expanded. This mechanism works independently between blocks.
 
     ![Flow](ReadmeImages/UI_007.png)
 
-    It's possible to use multi browser, multi tabs. The web app and in general the net split with back end was implemented on purpose, allow flexibility, use browser memory, and gain from bootstrap out of the box benefits when it comes of resizing, be mobile friendly etc..
+    It's possible to use multi browser, multi tabs. The web app, and in general the net split within backend/frontend was implemented on purpose, to allow flexibility, to use browser memory, gain from bootstrap "out of the box" benefits when it comes of resizing, be mobile friendly etc..
 
     ![Flow](ReadmeImages/UI_008.png)
